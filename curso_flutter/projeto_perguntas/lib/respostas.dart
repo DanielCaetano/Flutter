@@ -15,7 +15,7 @@ class Respostas extends StatelessWidget {
         child: Text(texto),
         style: ButtonStyle(
             backgroundColor: MaterialStateProperty.all(Colors.blue),
-            padding: MaterialStateProperty.all(EdgeInsets.all(10)),
+            padding: MaterialStateProperty.all(EdgeInsets.all(20)),
             textStyle: MaterialStateProperty.all(TextStyle(fontSize: 30))),
       ),
     );
