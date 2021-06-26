@@ -1,9 +1,11 @@
 import 'dart:ui';
 
+import 'package:expenses/components/chart.dart';
 import 'package:flutter/material.dart';
 import 'dart:math';
 import './components/transaction_form.dart';
 import './components/transaction_list.dart';
+import './components/chart.dart';
 import './models/transaction.dart';
 
 main() => runApp(ExpensesApp());
@@ -23,9 +25,12 @@ class _ExpensesAppState extends State<ExpensesApp> {
           accentColor: Colors.amber,
           fontFamily: 'Roboto',
           appBarTheme: AppBarTheme(
-              textTheme: ThemeData.light()
-                  .textTheme
-                  .copyWith(title: TextStyle(fontFamily: 'OpenSans')))),
+              textTheme: ThemeData.light().textTheme.copyWith(
+                      title: TextStyle(
+                    fontFamily: 'OpenSans',
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                  )))),
     );
   }
 }
@@ -36,7 +41,26 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  final List<Transaction> _transactions = [];
+  final List<Transaction> _transactions = [
+    Transaction(
+        id: 't1',
+        title: 'Tênis',
+        value: 120,
+        date: DateTime.now().subtract(Duration(days: 3))),
+    Transaction(
+        id: 't2',
+        title: 'Bota',
+        value: 80,
+        date: DateTime.now().subtract(Duration(days: 3)))
+  ];
+
+  List<Transaction> get _recentTransactions {
+    return _transactions.where((tr) {
+      return tr.date.isAfter(DateTime.now().subtract(
+        Duration(days: 7),
+      ));
+    }).toList();
+  }
 
   _addTransaction(String title, double value) {
     final newTransaction = Transaction(
@@ -76,16 +100,7 @@ class _MyHomePageState extends State<MyHomePage> {
           crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisAlignment: MainAxisAlignment.end,
           children: <Widget>[
-            Container(
-              child: Card(
-                color: Colors.blue[200],
-                child: Text(
-                  'Grafico2',
-                  style: TextStyle(fontSize: 20),
-                ),
-                elevation: 5,
-              ),
-            ),
+            Chart(_recentTransactions),
             TransactionList(_transactions),
           ],
         ),
